@@ -3,6 +3,8 @@ package com.example.nico.univerbiciandroid;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -11,6 +13,11 @@ import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -40,9 +47,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
-public class mapa extends FragmentActivity implements OnMapReadyCallback {
+public class mapa extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap mMap;
     private Handler handler;
@@ -72,6 +80,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
 
         String name;
         int est;
@@ -111,7 +120,9 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback {
                 handler.post(new Runnable() { // This thread runs in the UI
                     @Override
                     public void run() {
+                        final ArrayList<Estacionamiento> estacionamientos = new ArrayList<Estacionamiento>();//creamos el objeto lista;
                         String rest = null;
+
                         try {
                             rest = new getEstacionamientos(mcontext, mapa.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/").get();
                             //JSONObject json = new JSONObject(rest);
@@ -131,19 +142,51 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback {
                                     Estacionamiento est = new Estacionamiento(jObject);
                                     LatLng ubi = new LatLng(jObject.getDouble("ubi_x"),jObject.getDouble("ubi_y"));
                                     est.setUbicacion(ubi);
-                                    Log.e("Marker", "asda" + est.getNombreEstacionamiento() +" Ubicacion: " + ubi);
 
+                                    int idEst = i +1;
+                                    est.setIdEstacionamiento(idEst);
+
+                                    estacionamientos.add(est);//almacenamos el estacionamiento en la lista
+                                    int estDisp = est.getCantidadEstacionamiento() - est.getOcupados();
 
                                     Marker m2 = mMap.addMarker(new MarkerOptions()
                                             .position(ubi)
                                             .title(est.getNombreEstacionamiento())
-                                            .snippet("Ocupados: "+est.getOcupados())
+                                            .snippet("Cantidad de Estacionamientos: "+est.getCantidadEstacionamiento()+"\n"+
+                                                    "Estacionamientos Disponibles: "+estDisp)
                                     );
 
-                                    
+                                    /////////////
+                                    mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+                                        @Override
+                                        public View getInfoWindow(Marker marker) {
+                                            return null;
+                                        }
+
+                                        @Override
+                                        public View getInfoContents(Marker marker) {
+                                            Context mContext = getApplicationContext();
+                                            LinearLayout info = new LinearLayout(mContext);
+                                            info.setOrientation(LinearLayout.VERTICAL);
+
+                                            TextView title = new TextView(mContext);
+                                            title.setTextColor(Color.BLACK);
+                                            title.setGravity(Gravity.CENTER);
+                                            title.setTypeface(null, Typeface.BOLD);
+                                            title.setText(marker.getTitle());
+
+                                            TextView snippet = new TextView(mContext);
+                                            snippet.setTextColor(Color.GRAY);
+                                            snippet.setText(marker.getSnippet());
+
+                                            info.addView(title);
+                                            info.addView(snippet);
+                                            return info;
+                                        }
+                                    });
 
 
-
+                                    ///
                                 }
 
 
@@ -158,6 +201,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
                 });
 
@@ -172,7 +216,34 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback {
             e.printStackTrace();
         }
         t.start();
-        }
+
+/*
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public void onMarkerClick(Marker marker) {
+                String nombreMarcador = marker.getTitle();
+
+                Iterator iterador = estacionamientos.listIterator(); //Le solicito a la lista que me devuelva un iterador con todos los el elementos contenidos en ella
+
+                //Mientras que el iterador tenga un proximo elemento
+                while( iterador.hasNext() ) {
+                    Estacionamiento estPulsado = (Estacionamiento) iterador.next(); //Obtengo el elemento contenido
+                    //Log.e("Iterador","");
+                    if(nombreMarcador == estPulsado.getNombreEstacionamiento()){
+                        int estLibres = estPulsado.getCantidadEstacionamiento() - estPulsado.getOcupados();
+                        Toast.makeText(mapa.this,
+                                "Cantidad de estacionamientos: "+estPulsado.getCantidadEstacionamiento()+"\nEstacionamientos libres: "+estLibres,
+                                Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+
+
+            }
+        });*/
+
+
+    }
 }
 
 
