@@ -16,14 +16,14 @@ public class Usuario {
     String direccionUser;
     int sexoUser;
     int telefonoUser;
-    Date fechaNacUser;
+    String fechaNacUser;
 
     ArrayList<Usuario> usuarios;
 
     public Usuario() {
     }
 
-    public Usuario(String nombreUser, String apellidoUser, String nicknameUser, String passUser, String emailUser, String direccionUser, int sexoUser, int telefonoUser, Date fechaNacUser) {
+    public Usuario(String nombreUser, String apellidoUser, String nicknameUser, String passUser, String emailUser, String direccionUser, int sexoUser, int telefonoUser, String fechaNacUser) {
         this.nombreUser = nombreUser;
         this.apellidoUser = apellidoUser;
         this.nicknameUser = nicknameUser;
@@ -108,11 +108,11 @@ public class Usuario {
         this.telefonoUser = telefonoUser;
     }
 
-    public Date getFechaNacUser() {
+    public String getFechaNacUser() {
         return fechaNacUser;
     }
 
-    public void setFechaNacUser(Date fechaNacUser) {
+    public void setFechaNacUser(String fechaNacUser) {
         this.fechaNacUser = fechaNacUser;
     }
 

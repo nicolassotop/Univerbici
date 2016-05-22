@@ -79,7 +79,8 @@
             android:layout_height="52dp"
             android:layout_row="2"
             android:layout_column="1"
-            android:weightSum="1">
+            android:weightSum="1"
+            android:id="@+id/grupoSex">
 
             <RadioButton
                 android:layout_width="wrap_content"
