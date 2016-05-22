@@ -12,7 +12,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aplicación fea v1.0" />
+        android:text="Sprint 1" />
 
     <Button
         android:layout_width="wrap_content"
@@ -21,4 +21,13 @@
         android:id="@+id/botonMapa"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrate"
+        android:id="@+id/botonRegistro"
+        android:layout_above="@+id/botonMapa"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="37dp" />
 </RelativeLayout>

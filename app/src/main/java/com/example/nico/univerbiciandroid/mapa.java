@@ -153,7 +153,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
                                             .position(ubi)
                                             .title(est.getNombreEstacionamiento())
                                             .snippet("Cantidad de Estacionamientos: "+est.getCantidadEstacionamiento()+"\n"+
-                                                    "Estacionamientos Disponibles: "+estDisp)
+                                                    "Estacionamientos Ocupados: "+est.getOcupados()+"\n"+"Estacionamientos Disponibles: "+estDisp)
                                     );
 
                                     /////////////
