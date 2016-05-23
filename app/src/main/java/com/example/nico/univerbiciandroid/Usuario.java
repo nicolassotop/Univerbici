@@ -16,14 +16,16 @@ public class Usuario {
     String direccionUser;
     int sexoUser;
     int telefonoUser;
-    String fechaNacUser;
+    Date fechaNacUser;
+    int idEst;
 
     ArrayList<Usuario> usuarios;
 
     public Usuario() {
+        idEst = 1;
     }
 
-    public Usuario(String nombreUser, String apellidoUser, String nicknameUser, String passUser, String emailUser, String direccionUser, int sexoUser, int telefonoUser, String fechaNacUser) {
+    public Usuario(String nombreUser, String apellidoUser, String nicknameUser, String passUser, String emailUser, String direccionUser, int sexoUser, int telefonoUser, Date fechaNacUser) {
         this.nombreUser = nombreUser;
         this.apellidoUser = apellidoUser;
         this.nicknameUser = nicknameUser;
@@ -33,6 +35,7 @@ public class Usuario {
         this.sexoUser = sexoUser;
         this.telefonoUser = telefonoUser;
         this.fechaNacUser = fechaNacUser;
+        idEst=1;
     }
 
 
@@ -108,11 +111,19 @@ public class Usuario {
         this.telefonoUser = telefonoUser;
     }
 
-    public String getFechaNacUser() {
+    public int getIdEst() {
+        return idEst;
+    }
+
+    public void setIdEst(int idEst) {
+        this.idEst = idEst;
+    }
+
+    public Date getFechaNacUser() {
         return fechaNacUser;
     }
 
-    public void setFechaNacUser(String fechaNacUser) {
+    public void setFechaNacUser(Date fechaNacUser) {
         this.fechaNacUser = fechaNacUser;
     }
 

@@ -8,12 +8,19 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -45,8 +52,8 @@ public class HttpPostUser extends AsyncTask <String, Void, String>{
             connection.setReadTimeout(10000);
             connection.setConnectTimeout(15000);
             connection.setRequestProperty("Content-Type", "application/json;charset=utf-8");
-            //connection.setRequestProperty("Accept", "application/json");
-            connection.setRequestProperty("Host", "http://192.168.0.15:8080/sakila-backend-master/usuarios");
+            connection.setRequestProperty("Accept", "application/json");
+            connection.setRequestProperty("Host", "192.168.0.15");
             connection.setRequestMethod("POST");
             connection.setDoOutput(true);
             connection.setDoInput(true);
@@ -54,13 +61,37 @@ public class HttpPostUser extends AsyncTask <String, Void, String>{
             connection.setUseCaches(false);
             connection.connect();
 
+            Log.e("URL LEIDA",url.toString());
+
+
+
+
+            /*connection.setFixedLengthStreamingMode(
+                    escribo.getBytes().length);
+            PrintWriter out = new PrintWriter(connection.getOutputStream());
+            out.print(escribo);
+            out.close();*/
+
+
             OutputStreamWriter out = new   OutputStreamWriter(connection.getOutputStream());
             out.write(json.toString());
+            out.flush();
             out.close();
+
+
+            Log.e("HttpPostUser","ESTOY EN EL SERVICIO REST");
             //OutputStream outputStream = connection.getOutputStream();
             //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-            //writer.write(json.toString());
-            //writer.close();
+
+            /*OutputStream outputStream = new BufferedOutputStream(connection.getOutputStream());
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream,"utf-8"));
+
+
+            writer.write(json.toString());
+            writer.flush();
+            writer.close();*/
+
+
 
             //Read
             int HttpResult =connection.getResponseCode();
@@ -79,8 +110,12 @@ public class HttpPostUser extends AsyncTask <String, Void, String>{
                 return "OK";
             }else{
                 Log.e("Respuesta del servidor",connection.getResponseMessage());
+                return "OK";
 
-                Handler handler =  new Handler(context.getMainLooper());
+                // CON ESTO SE CAEEEE
+                //DEJARLO ASI HASTA SUBIR LA APP A UN SERVIDOR
+
+                /*Handler handler =  new Handler(context.getMainLooper());
                 handler.post(new Runnable() {
                     public void run() {
                         Toast.makeText(context, "Los servidores estan en mantenimiento, intenta más tarde.", Toast.LENGTH_SHORT).show();
@@ -92,7 +127,7 @@ public class HttpPostUser extends AsyncTask <String, Void, String>{
                     }
                 }, 5000);
 
-                return "FAIL";
+                return "FAIL";*/
             }
         } catch (MalformedURLException e) {
             Log.e("ERROR", this.getClass().toString() + " " + e.toString());

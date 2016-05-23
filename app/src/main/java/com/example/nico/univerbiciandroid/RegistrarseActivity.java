@@ -63,6 +63,7 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
     String correo;
     String telefono;
     String dire;
+    int idEstacionam;
 
     int sexo;
 
@@ -113,70 +114,10 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
         dirIngresa = (EditText)findViewById(R.id.dirIn);
         telIngresa= (EditText)findViewById(R.id.telIn);
         nacimientoIngresa =(EditText)findViewById(R.id.nacimientoIn);
+        idEstacionam=1;
 
     }
 
-    public static String POST(String url, Usuario userNuevo){
-        InputStream inputStream = null;
-        String result = "";
-        try {
-
-            // 1. create HttpClient
-            HttpClient httpclient = new DefaultHttpClient();
-
-            // 2. make POST request to the given URL
-            HttpPost httpPost = new HttpPost(url);
-
-            String json = "";
-
-            // 3. build jsonObject
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.accumulate("email", userNuevo.getEmailUser());
-            jsonObject.accumulate("password", userNuevo.getPassUser());
-            jsonObject.accumulate("nombre", userNuevo.getNombreUser());
-            jsonObject.accumulate("apellido", userNuevo.getApellidoUser());
-            jsonObject.accumulate("nickname", userNuevo.getNicknameUser());
-            jsonObject.accumulate("direccion", userNuevo.getDireccionUser());
-            jsonObject.accumulate("sexo", userNuevo.getSexoUser());
-            jsonObject.accumulate("fechaNacimiento", userNuevo.getFechaNacUser());
-            jsonObject.accumulate("Telefono", userNuevo.getTelefonoUser());
-
-            // 4. convert JSONObject to JSON to String
-            json = jsonObject.toString();
-
-            // ** Alternative way to convert Person object to JSON string usin Jackson Lib
-            // ObjectMapper mapper = new ObjectMapper();
-            // json = mapper.writeValueAsString(person);
-
-            // 5. set json to StringEntity
-            StringEntity se = new StringEntity(json);
-
-            // 6. set httpPost Entity
-            httpPost.setEntity(se);
-
-            // 7. Set some headers to inform server about the type of the content
-            httpPost.setHeader("usuarios", "application/json");
-            httpPost.setHeader("Content-type", "application/json");
-
-            // 8. Execute POST request to the given URL
-            HttpResponse httpResponse = httpclient.execute(httpPost);
-
-            // 9. receive response as inputStream
-            inputStream = httpResponse.getEntity().getContent();
-
-            // 10. convert inputstream to string
-            if(inputStream != null)
-                result = convertInputStreamToString(inputStream);
-            else
-                result = "Did not work!";
-
-        } catch (Exception e) {
-            Log.d("InputStream", e.getLocalizedMessage());
-        }
-
-        // 11. return result
-        return result;
-    }
 
     public boolean isConnected(){
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Activity.CONNECTIVITY_SERVICE);
@@ -186,33 +127,6 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
         else
             return false;
     }
-/*
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
-        @Override
-        protected String doInBackground(String... urls) {
-
-            user = new Usuario();
-            user.setNombreUser(nombre);
-            user.setApellidoUser(apellido);
-            user.setNicknameUser(nick);
-            user.setEmailUser(correo);
-            user.setPassUser(pass);
-            user.setDireccionUser(dire);
-            user.setTelefonoUser(telefono);
-            user.setFechaNacUser(fecha);
-            user.setSexoUser(sexoInt);
-            Log.e("ESPACIO","\n\n\n\n\n\n\n\n\n\n\n\n\n");
-            Log.e("Registro", "Nombre: "+nombre+"\n"+"Apellido: "+apellido);
-            Log.e("ESPACIO","\n\n\n\n\n\n\n\n\n\n\n\n\n");
-            return POST(urls[0],user);
-        }
-        // onPostExecute displays the results of the AsyncTask.
-        @Override
-        protected void onPostExecute(String result) {
-            Toast.makeText(getBaseContext(), "Se ha registrado exitosamente", Toast.LENGTH_LONG).show();
-
-        }
-    }*/
 
 
     @Override
@@ -229,8 +143,6 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
             fecha=nacimientoIngresa.getText().toString();
             sexoInt=sexo;
 
-            Log.e("JSONOBJ","Nombre: "+nombre);
-
             JSONObject jsonUser = new JSONObject();
 
             try {
@@ -240,15 +152,20 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
                 jsonUser.put("email",correo);
                 jsonUser.put("password",pass);
                 jsonUser.put("direccion",dire);
-                jsonUser.put("Telefono",telefono);
+                jsonUser.put("telefono",telefono);
                 jsonUser.put("fechaNacimiento",fecha);
                 jsonUser.put("sexo",sexoInt);
+                jsonUser.put("estacionamiento_idestacionamiento",1);
+
+
+                //Log.e("CONTENIDO JSON",jsonUser.get("nombre"));
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
 
-            new HttpPostUser(mcontext, jsonUser,RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/");
+            new HttpPostUser(mcontext, jsonUser,RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios");
 
 
             /*Intent intent = new Intent(this, mapa.class);
