@@ -5,9 +5,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -29,7 +32,7 @@ public class HttpPutEstacionamientos extends AsyncTask <String, Void, String> {
         /**
          * Constructor
          */
-        public HttpPutEstacionamientos(Context context, JSONObject json, RegistrarseActivity activity) {
+        public HttpPutEstacionamientos(Context context, JSONObject json, editarEstacionamActivity activity) {
             this.context = context;
             this.json = json;
             this.progressDialog = new ProgressDialog(activity);
@@ -64,14 +67,20 @@ public class HttpPutEstacionamientos extends AsyncTask <String, Void, String> {
             out.print(escribo);
             out.close();*/
 
-
+/*
                 OutputStreamWriter out = new   OutputStreamWriter(connection.getOutputStream());
                 out.write(json.toString());
                 out.flush();
                 out.close();
+                */
+
+                DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
+                wr.writeBytes(json.toString());
+                wr.flush();
+                wr.close();
 
 
-                Log.e("HttpPostUser","ESTOY EN EL SERVICIO REST");
+                Log.e("HttpPostUser","ESTOY EN EL SERVICIO REST"+json.toString());
                 //OutputStream outputStream = connection.getOutputStream();
                 //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 

@@ -1,6 +1,7 @@
 package com.example.nico.univerbiciandroid;
 
 import android.content.Context;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -54,7 +55,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
-public class mapa extends FragmentActivity implements OnMapReadyCallback{
+public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private Handler handler;
@@ -69,7 +70,8 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        //mMap.setOnInfoWindowClickListener(this);
+
+
 
     }
 
@@ -139,10 +141,10 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
                                 if (jObject != null) {
 
                                     Estacionamiento est = new Estacionamiento(jObject);
-                                    LatLng ubi = new LatLng(jObject.getDouble("ubi_x"),jObject.getDouble("ubi_y"));
+                                    LatLng ubi = new LatLng(jObject.getDouble("ubi_x"), jObject.getDouble("ubi_y"));
                                     est.setUbicacion(ubi);
 
-                                    int idEst = i +1;
+                                    final int idEst = i + 1;
                                     est.setIdEstacionamiento(idEst);
 
                                     estacionamientos.add(est);//almacenamos el estacionamiento en la lista
@@ -150,9 +152,9 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
 
                                     Marker m2 = mMap.addMarker(new MarkerOptions()
                                             .position(ubi)
-                                            .title(est.getNombreEstacionamiento())
-                                            .snippet("Cantidad de Estacionamientos: "+est.getCantidadEstacionamiento()+"\n"+
-                                                    "Estacionamientos Ocupados: "+est.getOcupados()+"\n"+"Estacionamientos Disponibles: "+estDisp)
+                                            .title(est.getNombreEstacionamiento()+","+est.getIdEstacionamiento())
+                                            .snippet("Cantidad de Estacionamientos: " + est.getCantidadEstacionamiento() + "\n" +
+                                                    "Estacionamientos Ocupados: " + est.getOcupados() + "\n" + "Estacionamientos Disponibles: " + estDisp)
                                     );
 
                                     /////////////
@@ -172,7 +174,9 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
                                             title.setTextColor(Color.BLACK);
                                             title.setGravity(Gravity.CENTER);
                                             title.setTypeface(null, Typeface.BOLD);
-                                            title.setText(marker.getTitle());
+
+                                            String[] contTitulo = marker.getTitle().split(",");
+                                            title.setText(contTitulo[0]);
 
                                             TextView snippet = new TextView(mContext);
                                             snippet.setTextColor(Color.GRAY);
@@ -184,13 +188,26 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
                                         }
                                     });
 
+                                    Log.e("infoW","Se cae antes");
+                                    mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
+                                        @Override
+                                        public void onInfoWindowClick(Marker marker) {
 
+                                            Intent intent = new Intent(mapa.this,editarEstacionamActivity.class);
+
+                                            String[] nombreId = marker.getTitle().split(",");
+
+                                            intent.putExtra("nombreEstacionamiento", nombreId[0]);
+                                            intent.putExtra("idEstacionamiento",nombreId[1]);
+                                            startActivity(intent);
+                                        }
+                                    });
+                                    Log.e("infoW","Se cae despues");
                                     ///
                                 }
 
 
                             } // End Loop
-
 
 
                         } catch (InterruptedException e) {
@@ -242,7 +259,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
         });*/
 
 
-    }
+
 
     /*
     @Override
@@ -280,11 +297,13 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
         alertDialog.show();*/
 
 
+    }
 
-
-
-
-
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        //Intent intent = new Intent(this,MainActivity.class);
+        //startActivity(intent);
+    }
 }
 
 

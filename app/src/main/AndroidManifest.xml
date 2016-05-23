@@ -42,7 +42,8 @@
         <activity
             android:name=".mapa"
             android:label="@string/title_activity_mapa" />
-        <activity android:name=".RegistrarseActivity"></activity>
+        <activity android:name=".RegistrarseActivity" />
+        <activity android:name=".editarEstacionamActivity"></activity>
     </application>
 
 </manifest>
