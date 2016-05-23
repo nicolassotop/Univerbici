@@ -237,6 +237,9 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
 
 
 */
+            Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this,MainActivity.class);
+            startActivity(intent);
 
         }
         if(v.getId() == R.id.cancelaIn){

@@ -1,6 +1,7 @@
 package com.example.nico.univerbiciandroid;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,9 +13,12 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +69,8 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        //mMap.setOnInfoWindowClickListener(this);
+
     }
 
 
@@ -91,14 +97,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
 
         Thread t;
 
-        // Add a marker in Informatica and move the camera
         LatLng info = new LatLng(-33.449833, -70.687145);
-
-        /*Marker informatica = mMap.addMarker(new MarkerOptions()
-                .position(info)
-                .title("Ingeniería en Informática")
-                .snippet("Estacionamientos: 10"));
-*/
 
 
         CameraPosition camPos = new CameraPosition.Builder()
@@ -244,6 +243,49 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback{
 
 
     }
+
+    /*
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        //String nombreEstacionamiento= marker.getTitle();
+        Log.e("InfowindowClick","Entré al infowindow");
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mapa.this);
+        alertDialog.setTitle("Estacionamientos libres");
+        alertDialog.setMessage("Ingrese la cantidad de estacionamientos disponibles:");
+
+        final EditText input = new EditText(mapa.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+
+        alertDialog.setPositiveButton("Aceptar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //blabla
+                        Log.e("DIALOG","Estoy en el dialog y acepté");
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancelar",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();*/
+
+
+
+
+
+
+
 }
+
 
 
