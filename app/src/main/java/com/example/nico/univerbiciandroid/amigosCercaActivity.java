@@ -70,6 +70,8 @@ public class amigosCercaActivity extends AppCompatActivity {
 
                                 if (jObjectAmigosCerca != null && i!= 0) { //El primero soy yo mismo, no me debo mostrar
 
+                                    //HAY QUE FILTRAR AL PROPIO USER !!!
+
                                     //int filas = tabla.getChildCount();
 
                                     //tabla.removeViews(1, filas-1);

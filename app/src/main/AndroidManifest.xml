@@ -48,7 +48,8 @@
             android:name=".mapsRuta"
             android:label="@string/title_activity_maps_ruta" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".amigosCercaActivity"></activity>
+        <activity android:name=".amigosCercaActivity" />
+        <activity android:name=".destinoRutaActivity"></activity>
     </application>
 
 </manifest>

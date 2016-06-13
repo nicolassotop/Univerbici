@@ -42,7 +42,11 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
     private GoogleMap mMap;
     private Handler handler;
     Context mcontext;
+    static ArrayList<Estacionamiento> estacionamientos;
 
+    public static ArrayList<Estacionamiento> getEstacionamientos() {
+        return estacionamientos;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +117,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                 handler.post(new Runnable() { // This thread runs in the UI
                     @Override
                     public void run() {
-                        final ArrayList<Estacionamiento> estacionamientos = new ArrayList<Estacionamiento>();//creamos el objeto lista;
+                        estacionamientos = new ArrayList<Estacionamiento>();//creamos el objeto lista;
                         String rest = null;
 
                         try {

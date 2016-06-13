@@ -62,14 +62,15 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        mMap2.setMyLocationEnabled(true);
+        //mMap2.setMyLocationEnabled(true);
 
-        LatLng info = new LatLng(-33.449833, -70.687145);
+        //LatLng info = new LatLng(-33.449833, -70.687145);
+        LatLng ubiUser = new LatLng(Login.getLatUserLogged(),Login.getLngUserLogged());
 
 
         CameraPosition camPos = new CameraPosition.Builder()
-                .target(info)   //Centramos el mapa en Madrid
-                .zoom(17)         //Establecemos el zoom en 19
+                .target(ubiUser)   //Centramos el mapa en Madrid
+                .zoom(15)         //Establecemos el zoom en 19
                 //.bearing(45)      //Establecemos la orientación con el noreste arriba
                 //.tilt(70)         //Bajamos el punto de vista de la cámara 70 grados
                 .build();
@@ -91,8 +92,8 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
                             //CAMBIAR EL EXE Y AGREGAR COORD DINAMICAS
 
                             Log.e("COORD","lat:"+Login.getLatUserLogged());
-                            String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin="+Login.getLatUserLogged()+","+Login.getLngUserLogged()+"&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
-                            //String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=-33.448649,%20-70.725299&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
+                            String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin="+Login.getLatUserLogged()+","+Login.getLngUserLogged()+"&destination="+destinoRutaActivity.getLatEntrada()+","+destinoRutaActivity.getLngEntrada()+"&mode=driving&avoid=highways|tolls").get();
+                            //String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin="+Login.getLatUserLogged()+","+Login.getLngUserLogged()+"&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
 
 
                             try {

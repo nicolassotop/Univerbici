@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (v.getId() == R.id.buttonRuta) {
-            Intent intent = new Intent(this, mapsRuta.class);
+            Intent intent = new Intent(this, destinoRutaActivity.class);
             startActivity(intent);
         }
 
