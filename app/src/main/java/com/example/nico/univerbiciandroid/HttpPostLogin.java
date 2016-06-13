@@ -2,46 +2,54 @@ package com.example.nico.univerbiciandroid;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.StringTokenizer;
+
+//import java.class.Login;
 
 /**
- * Created by nico on 22-05-16.
+ * Created by nico on 13-06-16.
  */
-public class HttpPost extends AsyncTask <String, Void, String>{
+public class HttpPostLogin extends AsyncTask<String, Void, String> {
 
     private Context context;
     private JSONObject json;
     ProgressDialog progressDialog;
+    static int ready;
+
+    public static int getReady() {
+        return ready;
+    }
+
+    public static void setReady(int ready) {
+        HttpPostLogin.ready = ready;
+    }
+
     /**
      * Constructor
      */
-    public HttpPost(Context context, JSONObject json, RegistrarseActivity activity) {
+    public HttpPostLogin(Context context, JSONObject json, Login activity) {
         this.context = context;
         this.json = json;
         this.progressDialog = new ProgressDialog(activity);
+        ready=0;
     }// HttpGet(Context context)
+
+
 
     @Override
     protected String doInBackground(String... urls) {
@@ -81,6 +89,41 @@ public class HttpPost extends AsyncTask <String, Void, String>{
 
                 while ((line = br.readLine()) != null) {
                     sb.append(line);
+                    Log.e("WHILE","sb="+sb);
+                    //Imprime {"INFO":"Loggeado","usuarioId":1,"nickname":"nick1","email":"email1"}
+                    String retorno = sb.toString();
+                    StringTokenizer tokens = new StringTokenizer(retorno,"{}:,\"");
+
+//                    while(tokens.hasMoreTokens()){
+
+                    tokens.nextToken();
+                    Login.setEstadoUserLogged(tokens.nextToken());
+                    //String estadoUserLogin = tokens.nextToken();
+
+                    Log.e("ESTADO USER","estado: "+Login.getEstadoUserLogged());
+
+                    if (Login.getEstadoUserLogged().equals("Loggeado")){
+                        tokens.nextToken();
+
+                        Login.setIdUserLogged(tokens.nextToken());
+                        Log.e("ID LOGGED","id= "+Login.getNickUserLogged());
+
+                        tokens.nextToken();
+
+                        Login.setNickUserLogged(tokens.nextToken());
+                        Log.e("NICK LOGGED","nick= "+Login.getNickUserLogged());
+
+                        tokens.nextToken();
+
+                        Login.setEmailUserLogged(tokens.nextToken());
+                        Log.e("CORREO LOGGED","correo= "+Login.getEmailUserLogged());
+
+
+
+                    }
+                    ready = 1;
+
+
                 }
                 br.close();
 
@@ -126,6 +169,8 @@ public class HttpPost extends AsyncTask <String, Void, String>{
     {
 
         progressDialog.cancel();
+        ready = 1;
+        Log.e("TERMINA","ready= "+ready);
 
         //Call your method that checks if the pictures were downloaded
 
