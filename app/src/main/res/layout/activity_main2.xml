@@ -29,9 +29,27 @@
         android:layout_height="wrap_content"
         android:text="Mejor Ruta"
         android:id="@+id/buttonRuta"
-        android:layout_marginTop="47dp"
         android:layout_below="@+id/botonMapa"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignEnd="@+id/botonMapa"
+        android:layout_alignStart="@+id/botonMapa" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Amigos cerca"
+        android:id="@+id/buttonAmigos"
+        android:layout_below="@+id/buttonRuta"
+        android:layout_alignStart="@+id/buttonRuta"
+        android:layout_alignEnd="@+id/buttonRuta" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar mi perfil"
+        android:id="@+id/buttonEditar"
+        android:layout_below="@+id/buttonAmigos"
+        android:layout_alignStart="@+id/buttonAmigos"
+        android:layout_alignEnd="@+id/buttonAmigos" />
 
 
 </RelativeLayout>

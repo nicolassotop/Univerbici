@@ -36,42 +36,42 @@ import java.util.logging.Handler;
 
 public class RegistrarseActivity extends AppCompatActivity implements View.OnClickListener{
 
-    Button botonGuardar;
-    Button botonCancelar;
+    private Button botonGuardar;
+    private Button botonCancelar;
 
-    EditText nombreIngresa;
-    EditText apellidoIngresa;
+    private EditText nombreIngresa;
+    private EditText apellidoIngresa;
 
-    RadioButton sexoIngresaHombre;
-    RadioButton sexoIngresaMujer;
-    RadioGroup grupoSexo;
+    private RadioButton sexoIngresaHombre;
+    private RadioButton sexoIngresaMujer;
+    private RadioGroup grupoSexo;
 
-    EditText nickIngresa;
-    EditText correoIngresa;
-    EditText passIngresa;
-    EditText dirIngresa;
-    EditText telIngresa;
-    EditText nacimientoIngresa;
+    private EditText nickIngresa;
+    private EditText correoIngresa;
+    private EditText passIngresa;
+    private EditText dirIngresa;
+    private EditText telIngresa;
+    private EditText nacimientoIngresa;
 
 
-    String nombre;
-    String apellido;
-    String nick;
-    String pass;
-    int sexoInt;
-    String fecha;
-    String correo;
-    String telefono;
-    String dire;
-    int idEstacionam;
+    private String nombre;
+    private String apellido;
+    private String nick;
+    private String pass;
+    private int sexoInt;
+    private String fecha;
+    private String correo;
+    private String telefono;
+    private String dire;
+    private int idEstacionam;
 
-    int sexo;
+    private int sexo;
 
-    Usuario user;
+    private Usuario user;
 
-    Thread t;
-    Handler handler;
-    Context mcontext;
+    private Thread t;
+    private Handler handler;
+    private Context mcontext;
 
 
     @Override

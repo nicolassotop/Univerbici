@@ -1,10 +1,13 @@
 package com.example.nico.univerbiciandroid;
 
 import android.content.Context;
+
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
@@ -12,6 +15,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -35,6 +39,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -55,7 +61,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
-public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoWindowClickListener {
+public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfoWindowClickListener {
 
     private GoogleMap mMap;
     private Handler handler;
@@ -70,7 +76,6 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoW
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
 
 
     }
@@ -88,7 +93,17 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoW
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
 
         String name;
         int est;
@@ -98,6 +113,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoW
 
 
         Thread t;
+        Thread t2;
 
         LatLng info = new LatLng(-33.449833, -70.687145);
 
@@ -152,7 +168,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoW
 
                                     Marker m2 = mMap.addMarker(new MarkerOptions()
                                             .position(ubi)
-                                            .title(est.getNombreEstacionamiento()+","+est.getIdEstacionamiento())
+                                            .title(est.getNombreEstacionamiento() + "," + est.getIdEstacionamiento())
                                             .snippet("Cantidad de Estacionamientos: " + est.getCantidadEstacionamiento() + "\n" +
                                                     "Estacionamientos Ocupados: " + est.getOcupados() + "\n" + "Estacionamientos Disponibles: " + estDisp)
                                     );
@@ -188,21 +204,21 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoW
                                         }
                                     });
 
-                                    Log.e("infoW","Se cae antes");
+
                                     mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
                                         @Override
                                         public void onInfoWindowClick(Marker marker) {
 
-                                            Intent intent = new Intent(mapa.this,editarEstacionamActivity.class);
+                                            Intent intent = new Intent(mapa.this, editarEstacionamActivity.class);
 
                                             String[] nombreId = marker.getTitle().split(",");
 
                                             intent.putExtra("nombreEstacionamiento", nombreId[0]);
-                                            intent.putExtra("idEstacionamiento",nombreId[1]);
+                                            intent.putExtra("idEstacionamiento", nombreId[1]);
                                             startActivity(intent);
                                         }
                                     });
-                                    Log.e("infoW","Se cae despues");
+
                                     ///
                                 }
 
@@ -233,69 +249,150 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoW
         }
         t.start();
 
-/*
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public void onMarkerClick(Marker marker) {
-                String nombreMarcador = marker.getTitle();
 
-                Iterator iterador = estacionamientos.listIterator(); //Le solicito a la lista que me devuelva un iterador con todos los el elementos contenidos en ella
+        final JSONObject[] jsonObj2 = {null};
 
-                //Mientras que el iterador tenga un proximo elemento
-                while( iterador.hasNext() ) {
-                    Estacionamiento estPulsado = (Estacionamiento) iterador.next(); //Obtengo el elemento contenido
-                    //Log.e("Iterador","");
-                    if(nombreMarcador == estPulsado.getNombreEstacionamiento()){
-                        int estLibres = estPulsado.getCantidadEstacionamiento() - estPulsado.getOcupados();
-                        Toast.makeText(mapa.this,
-                                "Cantidad de estacionamientos: "+estPulsado.getCantidadEstacionamiento()+"\nEstacionamientos libres: "+estLibres,
-                                Toast.LENGTH_SHORT).show();
+
+
+        t2 = new Thread(new Runnable() {
+            public void run() {
+                handler.post(new Runnable() { // This thread runs in the UI
+                    @Override
+                    public void run() {
+        try {
+            //String rest2 = new HttpGetRuta(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=" + latOrigen + "," + longOrigen + "&destination=" + latDestino + "," + longDestino + "&mode=driving&avoid=highways|tolls").get();
+            String rest2 = new HttpGetRuta(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=-33.448649,%20-70.725299&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
+
+
+            try {
+                jsonObj2[0] = new JSONObject(rest2);//jRest.getJSONObject(0);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            if (jsonObj2[0] != null) {
+
+
+
+                JSONArray jArrayRoutes;
+                JSONObject jObjectRoute;
+
+                JSONArray jArrayLegs;
+                JSONObject jObjectLegs;
+
+                JSONArray jArraySteps;
+                JSONObject jObjectStep;
+
+                JSONArray jArrayEndLocation;
+                JSONObject jObjectEndLocation;
+                JSONArray jArrayStartLocation;
+                JSONObject jObjectStartLocation;
+                JSONObject jObjGet;
+
+                LatLng puntoOrigen;
+                LatLng puntoDestino;
+
+                PolylineOptions rectOptions = null;
+
+
+
+                //SOL 3
+
+                jArrayRoutes = (JSONArray) jsonObj2[0].get("routes");
+                jObjGet = (JSONObject)jArrayRoutes.get(0);
+                jArrayLegs = (JSONArray)jObjGet.get("legs");
+                jObjectLegs = (JSONObject) jArrayLegs.get(0);
+                jArraySteps = (JSONArray)jObjectLegs.get("steps");
+                Log.e("JARRAYSTEP","contenido:"+jArraySteps.toString());
+                Log.e("Luego del jArray","STEPS");
+                /*/              SOLUCION 2
+                jObjectRoute = jsonObj2[0].getJSONObject("routes");
+                jObjectLegs = jObjectRoute.getJSONObject("legs");
+                jArraySteps = jObjectRoute.getJSONArray("steps");
+*/
+
+                /*            SOLUCION 1
+                jArrayRoutes = jsonObj2[0].getJSONArray("routes");
+                jObjectRoute =  jArrayRoutes.getJSONObject(0);
+
+
+                jArrayLegs = jObjectRoute.getJSONArray("legs");
+                jObjectLegs = jArrayLegs.getJSONObject(0);
+
+                jArraySteps = jObjectLegs.getJSONArray("steps");
+
+*/
+
+                Log.e("ANTES DEL FOR","FOR QUE AGREGA CADA PUNTO");
+
+                for (int i = 0; i < jArraySteps.length(); i++) {
+                    //jObjectStep = jArraySteps.getJSONObject(i);
+                    jObjectStep = (JSONObject)jArraySteps.get(i);
+                    Log.e("Luego del objStep","Objstem");
+                    if(i==0){
+                        //Log.e("Antes del array","anntes");
+                        //jArrayStartLocation = (JSONArray)jObjectStep.get("start_location");
+
+                        //AQUI SE CAEEEEEE OEEEEEEEEEE
+                        //Log.e("Luego del object","start_location"+jObjectStep.getJSONArray("start_location"));
+
+                        jObjectStartLocation = jObjectStep.getJSONObject("start_location");
+                        Log.e("luego del objectStart","lat="+jObjectStartLocation.getDouble("lat"));
+                        //jObjectStartLocation = jArrayStartLocation.getJSONObject(0);
+
+                        Log.e("LUEGO DEL JOBJECT","i="+i);
+                        puntoOrigen = new LatLng(jObjectStartLocation.getDouble("lat"),jObjectStartLocation.getDouble("lng"));
+
+                        Log.e("PUNTO ORIGEN","luego del punto origen");
+
+                        //latOrigen = jObjectStartLocation.getDouble("lat");
+                        //longOrigen = jObjectStartLocation.getDouble("lng");
+
+                        rectOptions = new PolylineOptions()
+                                .add(puntoOrigen); // Closes the polyline.
+
                     }
+                    Log.e("Luego del if","i!=0 /// i="+i);
 
-                }
+                    //jArrayEndLocation = (JSONArray) jObjectStep.get("end_location");
+
+                    jObjectEndLocation = jObjectStep.getJSONObject("end_location");
+
+                    Log.e("Luego del objEnd","i="+i);
+
+                    puntoDestino = new LatLng(jObjectEndLocation.getDouble("lat"),jObjectEndLocation.getDouble("lng"));
+                    //latDestino = jObjectEndLocation.getDouble("lat");
+                    //longDestino = jObjectEndLocation.getDouble("lng");
+
+                    rectOptions.add(puntoDestino);
 
 
             }
-        });*/
+                Polyline polyline = mMap.addPolyline(rectOptions);
+        }
 
 
-
-
-    /*
-    @Override
-    public void onInfoWindowClick(Marker marker) {
-        //String nombreEstacionamiento= marker.getTitle();
-        Log.e("InfowindowClick","Entré al infowindow");
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mapa.this);
-        alertDialog.setTitle("Estacionamientos libres");
-        alertDialog.setMessage("Ingrese la cantidad de estacionamientos disponibles:");
-
-        final EditText input = new EditText(mapa.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-        alertDialog.setView(input);
-
-
-        alertDialog.setPositiveButton("Aceptar",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        //blabla
-                        Log.e("DIALOG","Estoy en el dialog y acepté");
+        }catch (InterruptedException e) {
+        e.printStackTrace();
+    } catch (ExecutionException e) {
+        e.printStackTrace();
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
                     }
                 });
 
-        alertDialog.setNegativeButton("Cancelar",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
 
-        alertDialog.show();*/
+            }
 
+
+        });
+        try {
+            t2.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        t2.start();
 
     }
 
@@ -304,6 +401,8 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback,OnInfoW
         //Intent intent = new Intent(this,MainActivity.class);
         //startActivity(intent);
     }
+
+
 }
 
 

@@ -6,16 +6,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
-
+public class MainActivityLogged extends AppCompatActivity implements View.OnClickListener{
     private Button botonMapa;
-    private Button botonRegistro;
     private Button botonRuta;
+    private Button botonAmigos;
+    private Button botonEditar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main2);
 
         //Obteniendo una instancia del boton
         botonMapa = (Button)findViewById(R.id.botonMapa);
@@ -23,14 +23,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Registrando la escucha sobre la actividad Main
         botonMapa.setOnClickListener(this);
 
-
-        botonRegistro = (Button)findViewById(R.id.botonRegistro);
-        botonRegistro.setOnClickListener(this);
-
         botonRuta = (Button)findViewById(R.id.buttonRuta);
         botonRuta.setOnClickListener(this);
-    }
 
+        botonAmigos = (Button)findViewById(R.id.buttonAmigos);
+        botonAmigos.setOnClickListener(this);
+
+        botonEditar = (Button)findViewById(R.id.buttonEditar);
+        botonEditar.setOnClickListener(this);
+    }
 
 
 
@@ -40,19 +41,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Intent intent = new Intent(this, mapa.class);
             startActivity(intent);
         }
-        if(v.getId() == R.id.botonRegistro){
-
-                Intent intent = new Intent(this,RegistrarseActivity.class);
-                startActivity(intent);
-
-        }
 
         if(v.getId() == R.id.buttonRuta) {
-                Intent intent = new Intent(this, mapsRuta.class);
-                startActivity(intent);
+            Intent intent = new Intent(this, mapsRuta.class);
+            startActivity(intent);
+        }
+
+        if (v.getId()== R.id.buttonAmigos){
+            //BUSCAR AMIGOS CERCA
+        }
+        if (v.getId()== R.id.buttonEditar){
+            //EDITAR DATOS
         }
 
     }
-
-
 }
