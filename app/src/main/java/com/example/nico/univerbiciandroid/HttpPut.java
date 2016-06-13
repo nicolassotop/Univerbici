@@ -23,7 +23,7 @@ import java.net.URL;
 /**
  * Created by nico on 23-05-16.
  */
-public class HttpPutEstacionamientos extends AsyncTask <String, Void, String> {
+public class HttpPut extends AsyncTask <String, Void, String> {
 
 
         private Context context;
@@ -32,7 +32,7 @@ public class HttpPutEstacionamientos extends AsyncTask <String, Void, String> {
         /**
          * Constructor
          */
-        public HttpPutEstacionamientos(Context context, JSONObject json, editarEstacionamActivity activity) {
+        public HttpPut(Context context, JSONObject json, editarEstacionamActivity activity) {
             this.context = context;
             this.json = json;
             this.progressDialog = new ProgressDialog(activity);
@@ -80,7 +80,7 @@ public class HttpPutEstacionamientos extends AsyncTask <String, Void, String> {
                 wr.close();
 
 
-                Log.e("HttpPostUser","ESTOY EN EL SERVICIO REST"+json.toString());
+                Log.e("HttpPost","ESTOY EN EL SERVICIO REST"+json.toString());
                 //OutputStream outputStream = connection.getOutputStream();
                 //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 

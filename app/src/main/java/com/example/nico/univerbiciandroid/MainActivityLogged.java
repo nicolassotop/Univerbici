@@ -49,9 +49,11 @@ public class MainActivityLogged extends AppCompatActivity implements View.OnClic
 
         if (v.getId()== R.id.buttonAmigos){
             //BUSCAR AMIGOS CERCA
+
         }
         if (v.getId()== R.id.buttonEditar){
             //EDITAR DATOS
+            //SOLO EMAIL; PASS; DIR Y TEL
         }
 
     }

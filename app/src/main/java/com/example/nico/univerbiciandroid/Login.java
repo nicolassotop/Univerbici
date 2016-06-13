@@ -24,7 +24,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         setContentView(R.layout.activity_login);
 
 
-        botonRegistro = (Button)findViewById(R.id.botonRegistro);
+        botonRegistro = (Button)findViewById(R.id.buttonIngresa);
         botonRegistro.setOnClickListener(this);
 
         botonLogea = (Button)findViewById(R.id.registraButton);
@@ -36,7 +36,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     @Override
     public void onClick(View v){
 
-        if(v.getId() == R.id.botonRegistro){
+        if(v.getId() == R.id.buttonIngresa){
 
             Intent intent = new Intent(this,RegistrarseActivity.class);
             startActivity(intent);

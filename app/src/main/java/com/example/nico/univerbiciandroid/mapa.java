@@ -4,32 +4,20 @@ import android.content.Context;
 
 import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -42,23 +30,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfoWindowClickListener {
@@ -141,7 +117,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                         String rest = null;
 
                         try {
-                            rest = new getEstacionamientos(mcontext, mapa.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/").get();
+                            rest = new HttpGet(mcontext, mapa.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/").get();
                             //JSONObject json = new JSONObject(rest);
                             JSONArray jRest = new JSONArray(rest);
 
@@ -248,7 +224,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
             e.printStackTrace();
         }
         t.start();
-
+/*
 
         final JSONObject[] jsonObj2 = {null};
 
@@ -260,8 +236,8 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                     @Override
                     public void run() {
         try {
-            //String rest2 = new HttpGetRuta(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=" + latOrigen + "," + longOrigen + "&destination=" + latDestino + "," + longDestino + "&mode=driving&avoid=highways|tolls").get();
-            String rest2 = new HttpGetRuta(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=-33.448649,%20-70.725299&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
+            //String rest2 = new HttpGet(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=" + latOrigen + "," + longOrigen + "&destination=" + latDestino + "," + longDestino + "&mode=driving&avoid=highways|tolls").get();
+            String rest2 = new HttpGet(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=-33.448649,%20-70.725299&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
 
 
             try {
@@ -305,23 +281,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                 jArraySteps = (JSONArray)jObjectLegs.get("steps");
                 Log.e("JARRAYSTEP","contenido:"+jArraySteps.toString());
                 Log.e("Luego del jArray","STEPS");
-                /*/              SOLUCION 2
-                jObjectRoute = jsonObj2[0].getJSONObject("routes");
-                jObjectLegs = jObjectRoute.getJSONObject("legs");
-                jArraySteps = jObjectRoute.getJSONArray("steps");
-*/
 
-                /*            SOLUCION 1
-                jArrayRoutes = jsonObj2[0].getJSONArray("routes");
-                jObjectRoute =  jArrayRoutes.getJSONObject(0);
-
-
-                jArrayLegs = jObjectRoute.getJSONArray("legs");
-                jObjectLegs = jArrayLegs.getJSONObject(0);
-
-                jArraySteps = jObjectLegs.getJSONArray("steps");
-
-*/
 
                 Log.e("ANTES DEL FOR","FOR QUE AGREGA CADA PUNTO");
 
@@ -392,7 +352,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        t2.start();
+        t2.start();*/
 
     }
 

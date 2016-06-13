@@ -5,10 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,12 +14,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,9 +21,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Handler;
 
 public class RegistrarseActivity extends AppCompatActivity implements View.OnClickListener{
@@ -165,7 +154,7 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
             }
 
 
-            new HttpPostUser(mcontext, jsonUser,RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios");
+            new HttpPost(mcontext, jsonUser,RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios");
 
 
             /*Intent intent = new Intent(this, mapa.class);
@@ -225,7 +214,7 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            new HttpPostUser(mcontext,jsonParam, RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/");
+                            new HttpPost(mcontext,jsonParam, RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/");
 
                         }
                     });

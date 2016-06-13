@@ -11,7 +11,6 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,7 +63,7 @@ public class editarEstacionamActivity extends AppCompatActivity implements View.
 
         String rest=null;
         try {
-            rest = new HttpGetEstacionamientoxId(mcontext, editarEstacionamActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/" + idEstacionamiento).get();
+            rest = new HttpGet(mcontext, editarEstacionamActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/" + idEstacionamiento).get();
 
             jsonObj = new JSONObject(rest);
             nPicker.setMaxValue(jsonObj.getInt("capacidad"));
@@ -118,7 +117,7 @@ public class editarEstacionamActivity extends AppCompatActivity implements View.
                 e.printStackTrace();
             }
 
-            new HttpPutEstacionamientos(mcontext, jsonObj,editarEstacionamActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/"+idEstacionamiento);
+            new HttpPut(mcontext, jsonObj,editarEstacionamActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/"+idEstacionamiento);
             Toast.makeText(this, "Capacidad editada exitosamente", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, mapa.class);
             startActivity(intent);

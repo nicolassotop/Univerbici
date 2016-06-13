@@ -29,7 +29,7 @@ import java.net.URL;
 /**
  * Created by nico on 22-05-16.
  */
-public class HttpPostUser extends AsyncTask <String, Void, String>{
+public class HttpPost extends AsyncTask <String, Void, String>{
 
     private Context context;
     private JSONObject json;
@@ -37,7 +37,7 @@ public class HttpPostUser extends AsyncTask <String, Void, String>{
     /**
      * Constructor
      */
-    public HttpPostUser(Context context, JSONObject json, RegistrarseActivity activity) {
+    public HttpPost(Context context, JSONObject json, RegistrarseActivity activity) {
         this.context = context;
         this.json = json;
         this.progressDialog = new ProgressDialog(activity);
@@ -79,7 +79,7 @@ public class HttpPostUser extends AsyncTask <String, Void, String>{
             out.close();
 
 
-            Log.e("HttpPostUser","ESTOY EN EL SERVICIO REST");
+            Log.e("HttpPost","ESTOY EN EL SERVICIO REST");
             //OutputStream outputStream = connection.getOutputStream();
             //BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
 

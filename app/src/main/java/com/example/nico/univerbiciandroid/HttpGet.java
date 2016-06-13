@@ -1,8 +1,8 @@
 package com.example.nico.univerbiciandroid;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 
 import java.io.BufferedInputStream;
@@ -13,22 +13,23 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by nico on 23-05-16.
+ * Created by nico on 11-06-16.
  */
-public class HttpGetEstacionamientoxId extends AsyncTask<String, Void, String> {
+public class HttpGet extends AsyncTask<String, Void, String> {
+
+
     private Context context;
     private ProgressDialog progressDialog;
-    /**
-     * Constructor
-     */
-    public HttpGetEstacionamientoxId(Context context, editarEstacionamActivity activity) {
+
+    public HttpGet(Context context, Activity activity) {
         this.context = context;
         this.progressDialog = new ProgressDialog(activity);
-    }// HttpGet(Context context)
-    public HttpGetEstacionamientoxId(Context context) {
+    }
+
+    public HttpGet(Context context) {
         this.context = context;
         this.progressDialog = null;
-    }// HttpGet(Context context)
+    }
 
     /**
      * Método que realiza la petición al servidor
@@ -67,7 +68,7 @@ public class HttpGetEstacionamientoxId extends AsyncTask<String, Void, String> {
     @Override
     protected void onPreExecute() {
         if(progressDialog != null) {
-            progressDialog.setMessage("Cargando datos de estacionamiento...");
+            progressDialog.setMessage("Cargando datos de ruta...");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -77,9 +78,10 @@ public class HttpGetEstacionamientoxId extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String result) {
         if(progressDialog != null)
-            progressDialog.cancel();/*
-        Intent intent = new Intent("httpData").putExtra("data", result);
-        context.sendBroadcast(intent);*/
-    }// onPostExecute(String result)
+            progressDialog.cancel();
 
-}//
+    } // protected void onPostExecute(Void v)
+
+    //}// onPostExecute(String result)
+
+}
