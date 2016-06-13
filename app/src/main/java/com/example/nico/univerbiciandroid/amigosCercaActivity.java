@@ -1,6 +1,7 @@
 package com.example.nico.univerbiciandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -166,4 +167,9 @@ public class amigosCercaActivity extends AppCompatActivity {
 
     }
 
+    public void onBackPressed() {
+        //onNavigateUp();
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
 }

@@ -159,5 +159,10 @@ public class destinoRutaActivity extends AppCompatActivity implements View.OnCli
             startActivity(intent);
         }
     }
+    public void onBackPressed() {
+        //onNavigateUp();
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
 
 }

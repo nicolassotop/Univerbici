@@ -161,4 +161,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
         }
 
     }
+    public void onBackPressed() {
+        //onNavigateUp();
+        //Intent intent = new Intent(this,destinoRutaActivity.class);
+        //startActivity(intent);
+        //android.os.Process.killProcess(android.os.Process.myPid());
+
+    }
 }

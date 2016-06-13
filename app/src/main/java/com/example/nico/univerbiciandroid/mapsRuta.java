@@ -1,7 +1,9 @@
 package com.example.nico.univerbiciandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -153,7 +155,7 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
 
 
                                         rectOptions = new PolylineOptions()
-                                                .add(puntoOrigen); // Closes the polyline.
+                                                .add(puntoOrigen).color(Color.BLUE); // Closes the polyline.
 
                                     }
 
@@ -163,7 +165,7 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
 
                                     puntoDestino = new LatLng(jObjectEndLocation.getDouble("lat"),jObjectEndLocation.getDouble("lng"));
 
-                                    rectOptions.add(puntoDestino);
+                                    rectOptions.add(puntoDestino).color(Color.BLUE);
 
 
                                 }
@@ -193,6 +195,13 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
         }
         t3.start();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        //onNavigateUp();
+        Intent intent = new Intent(this,destinoRutaActivity.class);
+        startActivity(intent);
     }
 
 

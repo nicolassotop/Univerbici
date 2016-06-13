@@ -129,4 +129,9 @@ public class editarEstacionamActivity extends AppCompatActivity implements View.
 
         }
     }
+    public void onBackPressed() {
+        //onNavigateUp();
+        Intent intent = new Intent(this,mapa.class);
+        startActivity(intent);
+    }
 }

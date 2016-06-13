@@ -115,9 +115,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.buttonEditar) {
             //EDITAR DATOS
             //SOLO EMAIL; PASS; DIR Y TEL
+            Intent intent = new Intent(this, editarDatosUserActivity.class);
+            startActivity(intent);
 
+        }
 
     }
-
+    public void onBackPressed() {
+        //onNavigateUp();
+        Intent intent = new Intent(this,Login.class);
+        startActivity(intent);
     }
+
 }

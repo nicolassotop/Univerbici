@@ -365,7 +365,11 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
         //Intent intent = new Intent(this,MainActivity.class);
         //startActivity(intent);
     }
-
+    public void onBackPressed() {
+        //onNavigateUp();
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+    }
 
 }
 

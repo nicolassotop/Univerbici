@@ -252,4 +252,10 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
         return result;
 
     }
+
+    public void onBackPressed() {
+        //onNavigateUp();
+        Intent intent = new Intent(this,Login.class);
+        startActivity(intent);
+    }
 }
