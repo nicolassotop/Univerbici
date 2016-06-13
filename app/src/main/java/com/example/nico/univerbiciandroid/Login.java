@@ -36,6 +36,24 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     static String idUserLogged;
     static String estadoUserLogged;
     static String emailUserLogged;
+    static double latUserLogged;
+    static double lngUserLogged;
+
+    public static double getLatUserLogged() {
+        return latUserLogged;
+    }
+
+    public static void setLatUserLogged(double latUserLogged) {
+        Login.latUserLogged = latUserLogged;
+    }
+
+    public static double getLngUserLogged() {
+        return lngUserLogged;
+    }
+
+    public static void setLngUserLogged(double lngUserLogged) {
+        Login.lngUserLogged = lngUserLogged;
+    }
 
     public static String getNickUserLogged() {
         return nickUserLogged;

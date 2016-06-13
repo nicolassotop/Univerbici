@@ -51,7 +51,8 @@ public class amigosCercaActivity extends AppCompatActivity {
                         String rest = null;
 
                         try {
-                            rest = new HttpGet(mContext, amigosCercaActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/1/cercanos").get();
+                            String idUser = Login.getIdUserLogged();
+                            rest = new HttpGet(mContext, amigosCercaActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/"+idUser+"/cercanos").get();
 
                             JSONArray jRestAmigosCerca = new JSONArray(rest);
 

@@ -2,28 +2,41 @@ package com.example.nico.univerbiciandroid;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private Handler handler;
+    private Thread t;
     private Button botonMapa;
     private Button botonRuta;
     private Button botonAmigos;
     private Button botonEditar;
+    private TextView bienvenido;
+    private JSONObject jObjUserLogged;
 
-    Context mcontextLog;
+    private Context mcontextLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.activity_main);
+
+        bienvenido = (TextView)findViewById(R.id.bienvenidoTextV);
+        bienvenido.setText("Bienvenido "+Login.getNickUserLogged());
 
         //Obteniendo una instancia del boton
         botonMapa = (Button)findViewById(R.id.botonMapa);
@@ -42,7 +55,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         botonEditar.setOnClickListener(this);
 
 
-    }
+
+
+
+                String rest = null;
+
+                try {
+                    rest = new HttpGet(mcontextLog, MainActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/"+Login.getIdUserLogged()).get();
+                    //JSONObject json = new JSONObject(rest);
+                    //JSONArray jRest = new JSONArray(rest);
+
+                    jObjUserLogged = new JSONObject(rest);
+                    /*try {
+                        jObject = jRest.getJSONObject(0);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }*/
+
+                    if (jObjUserLogged != null) {
+                        Login.setLatUserLogged(jObjUserLogged.getDouble("ubi_xUsuario"));
+                        Login.setLngUserLogged(jObjUserLogged.getDouble("ubi_yUsuario"));
+
+                        Log.e("LUEGO DE IF JOBJ","lat: "+Login.getLatUserLogged());
+
+                    }
+
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
 
 
 

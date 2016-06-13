@@ -90,7 +90,9 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
                         try {
                             //CAMBIAR EL EXE Y AGREGAR COORD DINAMICAS
 
-                            String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=-33.448649,%20-70.725299&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
+                            Log.e("COORD","lat:"+Login.getLatUserLogged());
+                            String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin="+Login.getLatUserLogged()+","+Login.getLngUserLogged()+"&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
+                            //String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=-33.448649,%20-70.725299&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
 
 
                             try {

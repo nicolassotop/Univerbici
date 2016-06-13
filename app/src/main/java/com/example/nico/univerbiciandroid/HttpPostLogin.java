@@ -106,7 +106,7 @@ public class HttpPostLogin extends AsyncTask<String, Void, String> {
                         tokens.nextToken();
 
                         Login.setIdUserLogged(tokens.nextToken());
-                        Log.e("ID LOGGED","id= "+Login.getNickUserLogged());
+                        Log.e("ID LOGGED","id= "+Login.getIdUserLogged());
 
                         tokens.nextToken();
 

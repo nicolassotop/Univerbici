@@ -89,7 +89,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
 
 
         Thread t;
-        Thread t2;
+
 
         LatLng info = new LatLng(-33.449833, -70.687145);
 
