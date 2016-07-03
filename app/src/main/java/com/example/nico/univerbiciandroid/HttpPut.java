@@ -1,5 +1,6 @@
 package com.example.nico.univerbiciandroid;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -32,7 +33,7 @@ public class HttpPut extends AsyncTask <String, Void, String> {
         /**
          * Constructor
          */
-        public HttpPut(Context context, JSONObject json, editarEstacionamActivity activity) {
+        public HttpPut(Context context, JSONObject json, Activity activity) {
             this.context = context;
             this.json = json;
             this.progressDialog = new ProgressDialog(activity);

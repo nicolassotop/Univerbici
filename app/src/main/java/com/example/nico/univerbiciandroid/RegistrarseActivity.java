@@ -121,119 +121,62 @@ public class RegistrarseActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.aceptaIn) {
+            //Se obtienen los datos ingresados en los edittext
+            nombre = nombreIngresa.getText().toString();
+            apellido = apellidoIngresa.getText().toString();
+            nick = nickIngresa.getText().toString();
+            correo = correoIngresa.getText().toString();
+            pass = passIngresa.getText().toString();
+            dire = dirIngresa.getText().toString();
+            telefono = telIngresa.getText().toString();
+            fecha = nacimientoIngresa.getText().toString();
+            sexoInt = sexo;
 
-            nombre=nombreIngresa.getText().toString();
-            apellido=apellidoIngresa.getText().toString();
-            nick=nickIngresa.getText().toString();
-            correo=correoIngresa.getText().toString();
-            pass=passIngresa.getText().toString();
-            dire=dirIngresa.getText().toString();
-            telefono=telIngresa.getText().toString();
-            fecha=nacimientoIngresa.getText().toString();
-            sexoInt=sexo;
+            //Si hay alguno vacio se muestra toast
+            if (nombre.equals("") || apellido.equals("") || nick.equals("") ||
+                    correo.equals("") || pass.equals("") || dire.equals("") ||
+                    telefono.equals("") || fecha.equals("")) {
 
-            JSONObject jsonUser = new JSONObject();
+                Toast.makeText(this, "Debe ingresar todos los campos", Toast.LENGTH_LONG).show();
 
-            try {
-                jsonUser.put("nombre",nombre);
-                jsonUser.put("apellido",apellido);
-                jsonUser.put("nickname",nick);
-                jsonUser.put("email",correo);
-                jsonUser.put("password",pass);
-                jsonUser.put("direccion",dire);
-                jsonUser.put("telefono",telefono);
-                jsonUser.put("fechaNacimiento",fecha);
-                jsonUser.put("sexo",sexoInt);
-                jsonUser.put("estacionamiento_idestacionamiento",1);
+            }else{
+                //Se crea un jsonObject
+                JSONObject jsonUser = new JSONObject();
 
-
-                //Log.e("CONTENIDO JSON",jsonUser.get("nombre"));
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-            new HttpPost(mcontext, jsonUser,RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios");
-
-
-            /*Intent intent = new Intent(this, mapa.class);
-            startActivity(intent);
-            Pantalla bienvenida, mostrar mensaje
+                //Se le asignan los atributos
+                try {
+                    jsonUser.put("nombre", nombre);
+                    jsonUser.put("apellido", apellido);
+                    jsonUser.put("nickname", nick);
+                    jsonUser.put("email", correo);
+                    jsonUser.put("password", pass);
+                    jsonUser.put("direccion", dire);
+                    jsonUser.put("telefono", telefono);
+                    jsonUser.put("fechaNacimiento", fecha);
+                    jsonUser.put("sexo", sexoInt);
+                    jsonUser.put("estacionamiento_idestacionamiento", 1);
 
 
+                    //Log.e("CONTENIDO JSON",jsonUser.get("nombre"));
 
-
-            t = new Thread(new Runnable() {
-                public void run() {
-                    handler.post(new Runnable() { // This thread runs in the UI
-                        @Override
-                        public void run() {
-
-                            JSONObject jsonParam = new JSONObject();
-
-                            nombreIngresa = (EditText)findViewById(R.id.nombreIn);
-                            apellidoIngresa = (EditText)findViewById(R.id.apellidoIn);
-                            sexoIngresaHombre = (RadioButton) findViewById(R.id.hombre);
-                            sexoIngresaMujer = (RadioButton) findViewById(R.id.mujer);
-                            nickIngresa = (EditText)findViewById(R.id.nickIn);
-                            correoIngresa = (EditText)findViewById(R.id.correoIn);
-                            passIngresa = (EditText)findViewById(R.id.passIn);
-                            dirIngresa = (EditText)findViewById(R.id.dirIn);
-                            telIngresa= (EditText)findViewById(R.id.telIn);
-                            nacimientoIngresa =(EditText)findViewById(R.id.nacimientoIn);
-
-
-                            String nombre = nombreIngresa.getText().toString();
-                            String apellido = apellidoIngresa.getText().toString();
-                            String nick = nickIngresa.getText().toString();
-                            String correo = correoIngresa.getText().toString();
-                            String pass = passIngresa.getText().toString();
-                            String dir = dirIngresa.getText().toString();
-                            int tel = Integer.parseInt(telIngresa.getText().toString());
-                            String nac= nacimientoIngresa.getText().toString();
-
-
-
-                            Usuario nuevoUser = new Usuario(nombre, apellido, nick, pass, correo,
-                                    dir, sexo, tel, nac);
-
-
-                            try {
-                                jsonParam.put("nombre", nombre);
-                                jsonParam.put("apellido", apellido);
-                                jsonParam.put("nickname", nick);
-                                jsonParam.put("email", correo);
-                                jsonParam.put("password", pass);
-                                jsonParam.put("direccion", dir);
-                                jsonParam.put("Telefono", tel);
-                                jsonParam.put("fechaNacimiento", nac);
-                                jsonParam.put("sexo",sexo);
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            new HttpPost(mcontext,jsonParam, RegistrarseActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/");
-
-                        }
-                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            });
-            t.start();
 
+                //Realizo el POST al servicio REST
+                new HttpPost(mcontext, jsonUser, RegistrarseActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/usuarios");
 
+                //Confirmo el registro
+                Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_LONG).show();
 
-
-*/
-            Toast.makeText(this, "Usuario registrado exitosamente", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this,MainActivity.class);
-            startActivity(intent);
-
+                //vuelvo al login
+                Intent intent = new Intent(this, Login.class);
+                startActivity(intent);
+            }
         }
         if(v.getId() == R.id.cancelaIn){
 
-            Intent intent = new Intent(this,MainActivity.class);
+            Intent intent = new Intent(this,Login.class);
             startActivity(intent);
 
         }

@@ -61,11 +61,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String rest = null;
 
                 try {
-                    rest = new HttpGet(mcontextLog, MainActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/usuarios/"+Login.getIdUserLogged()).get();
+                    //realizo un get para obtener todos los datos del usuario que ingresa
+                    rest = new HttpGet(mcontextLog, MainActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/usuarios/"+Login.getIdUserLogged()).get();
                     //JSONObject json = new JSONObject(rest);
                     //JSONArray jRest = new JSONArray(rest);
 
                     jObjUserLogged = new JSONObject(rest);
+                    Login.setJsonUserLog(jObjUserLogged);
                     /*try {
                         jObject = jRest.getJSONObject(0);
                     } catch (JSONException e) {

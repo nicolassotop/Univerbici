@@ -121,7 +121,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                         String rest = null;
 
                         try {
-                            rest = new HttpGet(mcontext, mapa.this).execute("http://192.168.0.15:8080/sakila-backend-master/estacionamientos/").get();
+                            rest = new HttpGet(mcontext, mapa.this).execute("http://192.168.0.15:9090/sakila-backend-master/estacionamientos/").get();
                             //JSONObject json = new JSONObject(rest);
                             JSONArray jRest = new JSONArray(rest);
 

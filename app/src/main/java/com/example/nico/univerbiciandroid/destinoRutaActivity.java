@@ -68,7 +68,7 @@ public class destinoRutaActivity extends AppCompatActivity implements View.OnCli
 
 
         try {
-            rest = new HttpGet(contextDestiny, destinoRutaActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/entradas/").get();
+            rest = new HttpGet(contextDestiny, destinoRutaActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/entradas/").get();
             //JSONObject json = new JSONObject(rest);
             JSONArray jRest = new JSONArray(rest);
 
@@ -123,7 +123,7 @@ public class destinoRutaActivity extends AppCompatActivity implements View.OnCli
                     String idEntradaSelect;
                     idEntradaSelect = listID.get(i);
                     try {
-                        rest = new HttpGet(mcontextDestinoRuta, destinoRutaActivity.this).execute("http://192.168.0.15:8080/sakila-backend-master/entradas/" + idEntradaSelect).get();
+                        rest = new HttpGet(mcontextDestinoRuta, destinoRutaActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/entradas/" + idEntradaSelect).get();
 
                         jObjEntrada = new JSONObject(rest);
 

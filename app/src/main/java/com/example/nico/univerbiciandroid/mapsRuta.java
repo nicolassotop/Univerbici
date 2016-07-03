@@ -66,15 +66,13 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
         }
         //mMap2.setMyLocationEnabled(true);
 
-        //LatLng info = new LatLng(-33.449833, -70.687145);
+        //Ubicacion del usuario segun BD
         LatLng ubiUser = new LatLng(Login.getLatUserLogged(),Login.getLngUserLogged());
 
 
         CameraPosition camPos = new CameraPosition.Builder()
-                .target(ubiUser)   //Centramos el mapa en Madrid
-                .zoom(15)         //Establecemos el zoom en 19
-                //.bearing(45)      //Establecemos la orientación con el noreste arriba
-                //.tilt(70)         //Bajamos el punto de vista de la cámara 70 grados
+                .target(ubiUser)   //Centramos el mapa en la ubicacion del user
+                .zoom(15)         //Establecemos el zoom en 15
                 .build();
 
         CameraUpdate camUpd3 =
@@ -91,11 +89,9 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
                     @Override
                     public void run() {
                         try {
-                            //CAMBIAR EL EXE Y AGREGAR COORD DINAMICAS
-
-                            Log.e("COORD","lat:"+Login.getLatUserLogged());
+                            //Directions API
                             String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin="+Login.getLatUserLogged()+","+Login.getLngUserLogged()+"&destination="+destinoRutaActivity.getLatEntrada()+","+destinoRutaActivity.getLngEntrada()+"&mode=driving&avoid=highways|tolls").get();
-                            //String rest3 = new HttpGet(mcontext, mapsRuta.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin="+Login.getLatUserLogged()+","+Login.getLngUserLogged()+"&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
+
 
 
                             try {
@@ -107,7 +103,7 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
                             if (jsonObj1[0] != null) {
 
 
-
+                                //El get devuelve muchos datos, se debe filtrar y luego iterar entre los puntos
                                 JSONArray jArrayRoutes;
                                 JSONObject jObjectRoute;
 
@@ -137,38 +133,43 @@ public class mapsRuta extends FragmentActivity implements OnMapReadyCallback {
                                 jArrayLegs = (JSONArray)jObjGet.get("legs");
                                 jObjectLegs = (JSONObject) jArrayLegs.get(0);
                                 jArraySteps = (JSONArray)jObjectLegs.get("steps");
-                                Log.e("JARRAYSTEP","contenido:"+jArraySteps.toString());
-                                Log.e("Luego del jArray","STEPS");
 
-
-                                Log.e("ANTES DEL FOR","FOR QUE AGREGA CADA PUNTO");
-
+                                //For que itera entre los puntos
                                 for (int i = 0; i < jArraySteps.length(); i++) {
                                     //jObjectStep = jArraySteps.getJSONObject(i);
                                     jObjectStep = (JSONObject)jArraySteps.get(i);
 
                                     if(i==0){
 
-
+                                        //Cada vez que dobla se crea una linea con un nuevo start y end location
+                                        //Si es la primera vez el start sera el punto de inicio
                                         jObjectStartLocation = jObjectStep.getJSONObject("start_location");
                                         puntoOrigen = new LatLng(jObjectStartLocation.getDouble("lat"),jObjectStartLocation.getDouble("lng"));
 
+                                        mMap2.addMarker(new MarkerOptions()
+                                                        .position(puntoOrigen));
 
-                                        rectOptions = new PolylineOptions()
+                                                rectOptions = new PolylineOptions()
                                                 .add(puntoOrigen).color(Color.BLUE); // Closes the polyline.
 
                                     }
 
+                                    //Se consideran solo los end porque:
+                                    //end_location[0] == start_location[1]
                                     jObjectEndLocation = jObjectStep.getJSONObject("end_location");
-
-
 
                                     puntoDestino = new LatLng(jObjectEndLocation.getDouble("lat"),jObjectEndLocation.getDouble("lng"));
 
                                     rectOptions.add(puntoDestino).color(Color.BLUE);
 
-
+                                    //Si es el ultimo punto se pone un marcador
+                                    if(i==jArraySteps.length() -1){
+                                        mMap2.addMarker(new MarkerOptions()
+                                                .position(puntoDestino));
+                                    }
                                 }
+
+                                //Se crea la polilinea y se agrega al mapa
                                 Polyline polyline = mMap2.addPolyline(rectOptions);
                             }
 
