@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button botonAmigos;
     private Button botonEditar;
     private Button botonCalifico;
+    private Button volver;
     private TextView bienvenido;
     private JSONObject jObjUserLogged;
 
@@ -58,7 +59,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         botonCalifico = (Button)findViewById(R.id.botonCalificarRutaMain);
         botonCalifico.setOnClickListener(this);
 
-
+        volver = (Button)findViewById(R.id.volveraLogin);
+        volver.setOnClickListener(this);
 
                 String rest = null;
 
@@ -125,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.botonCalificarRutaMain) {
             //calificar rutas
             Intent intent = new Intent(this, calificaRutaActivity.class);
+            startActivity(intent);
+
+        }
+        if (v.getId() == R.id.volveraLogin) {
+            //vuelvo a login
+            Intent intent = new Intent(this, Login.class);
             startActivity(intent);
 
         }

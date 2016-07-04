@@ -26,25 +26,25 @@
         android:numStars="7"
         android:rating="0"
         android:stepSize="1"
+        android:theme="@style/RatingBar"
         android:layout_below="@+id/textView21"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Aceptar"
         android:id="@+id/aceptaCalifica"
-        android:layout_below="@+id/calificaRatingBar"
-        android:layout_alignEnd="@+id/textView21" />
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/calificaRatingBar" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cancelar"
         android:id="@+id/cancelaCalifica"
-        android:layout_below="@+id/aceptaCalifica"
-        android:layout_alignStart="@+id/aceptaCalifica" />
+        android:layout_alignTop="@+id/aceptaCalifica"
+        android:layout_alignEnd="@+id/textView21" />
 
     <TextView
         android:layout_width="wrap_content"

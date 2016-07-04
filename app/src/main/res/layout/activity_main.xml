@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="Amigos cerca"
         android:id="@+id/buttonAmigos"
-        android:layout_below="@+id/buttonRuta"
+        android:layout_centerVertical="true"
         android:layout_alignStart="@+id/buttonRuta"
         android:layout_alignEnd="@+id/buttonRuta" />
 
@@ -57,9 +57,18 @@
         android:layout_height="wrap_content"
         android:text="Calificar rutas"
         android:id="@+id/botonCalificarRutaMain"
+        android:layout_above="@+id/buttonAmigos"
+        android:layout_alignEnd="@+id/buttonRuta"
+        android:layout_alignStart="@+id/buttonAmigos" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Volver"
+        android:id="@+id/volveraLogin"
         android:layout_below="@+id/buttonEditar"
-        android:layout_alignEnd="@+id/buttonEditar"
-        android:layout_alignStart="@+id/buttonEditar" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp" />
 
 
 </RelativeLayout>

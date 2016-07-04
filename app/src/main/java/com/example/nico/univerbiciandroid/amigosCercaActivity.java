@@ -73,7 +73,7 @@ public class amigosCercaActivity extends AppCompatActivity {
                                 }
 
                                 //Si quedan amigos cerca y si el amigo no soy yo mismo
-                                if (jObjectAmigosCerca != null && !idUser.equals(Integer.toString(i))) {
+                                if (jObjectAmigosCerca != null && !idUser.equals(jObjectAmigosCerca.getString("idusuario"))) {
 
                                     //Se obtienen los campos para llenar la tabla
                                     nombre = jObjectAmigosCerca.getString("nombre");
