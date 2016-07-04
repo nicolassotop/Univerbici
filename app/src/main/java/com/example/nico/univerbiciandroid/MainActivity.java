@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button botonRuta;
     private Button botonAmigos;
     private Button botonEditar;
+    private Button botonCalifico;
     private TextView bienvenido;
     private JSONObject jObjUserLogged;
 
@@ -54,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         botonEditar = (Button)findViewById(R.id.buttonEditar);
         botonEditar.setOnClickListener(this);
 
-
+        botonCalifico = (Button)findViewById(R.id.botonCalificarRutaMain);
+        botonCalifico.setOnClickListener(this);
 
 
 
@@ -121,7 +123,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
 
         }
+        if (v.getId() == R.id.botonCalificarRutaMain) {
 
+            Intent intent = new Intent(this, calificaRutaActivity.class);
+            startActivity(intent);
+
+        }
     }
     public void onBackPressed() {
         //onNavigateUp();

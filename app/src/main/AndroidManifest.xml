@@ -50,7 +50,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".amigosCercaActivity" />
         <activity android:name=".destinoRutaActivity" />
-        <activity android:name=".editarDatosUserActivity"></activity>
+        <activity android:name=".editarDatosUserActivity" />
+        <activity android:name=".calificaRutaActivity"></activity>
     </application>
 
 </manifest>

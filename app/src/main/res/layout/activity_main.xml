@@ -52,5 +52,14 @@
         android:layout_alignStart="@+id/buttonAmigos"
         android:layout_alignEnd="@+id/buttonAmigos" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calificar rutas"
+        android:id="@+id/botonCalificarRutaMain"
+        android:layout_below="@+id/buttonEditar"
+        android:layout_alignEnd="@+id/buttonEditar"
+        android:layout_alignStart="@+id/buttonEditar" />
+
 
 </RelativeLayout>
