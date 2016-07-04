@@ -36,7 +36,7 @@
         android:text="Aceptar"
         android:id="@+id/aceptaCalifica"
         android:layout_below="@+id/calificaRatingBar"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignEnd="@+id/textView21" />
 
     <Button
         android:layout_width="wrap_content"

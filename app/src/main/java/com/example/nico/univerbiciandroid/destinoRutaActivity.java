@@ -65,15 +65,17 @@ public class destinoRutaActivity extends AppCompatActivity implements View.OnCli
 
         String rest = null;
 
-
-
         try {
+            //Hago un get para obtener todas las entradas
             rest = new HttpGet(contextDestiny, destinoRutaActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/entradas/").get();
-            //JSONObject json = new JSONObject(rest);
+
+            //Se guarda el resultado en un array
             JSONArray jRest = new JSONArray(rest);
 
+            //Se itera para cada elemento del array. Cada entrada distinta
             for (int i=0; i<jRest.length();i++) {
                 try {
+                    //Se crea el JSONObject para cada elemento
                     jObjEst = jRest.getJSONObject(i);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -81,14 +83,13 @@ public class destinoRutaActivity extends AppCompatActivity implements View.OnCli
 
                 if (jObjEst != null) {
 
-
-                    //estacionamientos.add(est);
-                    //names[i]=jObjEst.getString("nombreEntrada");
+                    //Se guardan los nombres y los id en listas diferentes, pero en el mismo orden
                     list.add(jObjEst.getString("nombreEntrada"));
                     listID.add(jObjEst.getString("identradaU"));
 
                 }
             }
+            //Se utiliza la lista de nombres para llenar el spinner
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                     this, android.R.layout.simple_spinner_item, list);
 
@@ -114,25 +115,29 @@ public class destinoRutaActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View v) {
         if (v.getId() == R.id.buttonVerRuta) {
 
+            //Se obtiene el nombre elegido en el spinner
             nombreEntradaElegida = sp.getSelectedItem().toString();
-            Log.e("NOMBRE ENTRADA ELEGIDA","nombre: "+nombreEntradaElegida);
 
+            //Se debe buscar el id en la otra lista
             for (int i=0; i<list.size();i++) {
                 if (nombreEntradaElegida.equals(list.get(i))) {
                     String rest = null;
                     String idEntradaSelect;
+                    //Encuentro el id
                     idEntradaSelect = listID.get(i);
                     try {
+                        //Con el id hago un get de la ruta
                         rest = new HttpGet(mcontextDestinoRuta, destinoRutaActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/entradas/" + idEntradaSelect).get();
 
+                        //se crea el JsonObject con los datos de la ruta
                         jObjEntrada = new JSONObject(rest);
 
                         if (jObjEntrada != null) {
+                            //Se guarda el punto de inicio
                             latEntrada = jObjEntrada.getDouble("ubi_xEntrada");
                             lngEntrada = jObjEntrada.getDouble("ubi_yEntrada");
 
-                            Log.e("LUEGO DE IF JOBJ", "lat: " + latEntrada);
-
+                            //Voy al mapa
                             Intent intent = new Intent(this, mapsRuta.class);
                             startActivity(intent);
 

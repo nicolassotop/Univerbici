@@ -63,24 +63,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String rest = null;
 
                 try {
-                    //realizo un get para obtener todos los datos del usuario que ingresa
+                    //realizo un get para obtener todos los datos del usuario que ingresa a partir del id
                     rest = new HttpGet(mcontextLog, MainActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/usuarios/"+Login.getIdUserLogged()).get();
-                    //JSONObject json = new JSONObject(rest);
-                    //JSONArray jRest = new JSONArray(rest);
 
+
+                    //Se guarda el resultado en un jsonObject
                     jObjUserLogged = new JSONObject(rest);
-                    Login.setJsonUserLog(jObjUserLogged);
-                    /*try {
-                        jObject = jRest.getJSONObject(0);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }*/
+
 
                     if (jObjUserLogged != null) {
                         Login.setLatUserLogged(jObjUserLogged.getDouble("ubi_xUsuario"));
                         Login.setLngUserLogged(jObjUserLogged.getDouble("ubi_yUsuario"));
 
-                        Log.e("LUEGO DE IF JOBJ","lat: "+Login.getLatUserLogged());
+                        //Se pasa al login, variable estatica para accederla desde cualquier parte
+                        Login.setJsonUserLog(jObjUserLogged);
+
 
                     }
 
@@ -101,11 +98,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.botonMapa) {
+            //mapa -> ver estacionamientos
             Intent intent = new Intent(this, mapa.class);
             startActivity(intent);
         }
 
         if (v.getId() == R.id.buttonRuta) {
+            //Ver mejor ruta
             Intent intent = new Intent(this, destinoRutaActivity.class);
             startActivity(intent);
         }
@@ -124,14 +123,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
         if (v.getId() == R.id.botonCalificarRutaMain) {
-
+            //calificar rutas
             Intent intent = new Intent(this, calificaRutaActivity.class);
             startActivity(intent);
 
         }
     }
     public void onBackPressed() {
-        //onNavigateUp();
+        //vuelvo al login
         Intent intent = new Intent(this,Login.class);
         startActivity(intent);
     }

@@ -64,9 +64,12 @@ public class editarDatosUserActivity extends AppCompatActivity implements View.O
             passIngresada = pass.getText().toString();
 
             jsonEdit = new JSONObject();
+
+            //Obtengo todos los datos del usuario logeado
             jsonEdit= Login.getJsonUserLog();
 
             try {
+                //edito los datos del jsonObject
                 jsonEdit.put("email",correoIngresado);
                 jsonEdit.put("direccion",direccionIngresada);
                 jsonEdit.put("telefono",fonoIngresado);
@@ -76,24 +79,28 @@ public class editarDatosUserActivity extends AppCompatActivity implements View.O
             }
 
 
-
+            //Hago el put al servicio Rest
             new HttpPut(mContext, jsonEdit,editarDatosUserActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/usuarios/"+Login.getIdUserLogged());
 
+            //confirmo con un toast
             Toast.makeText(this, "Datos editados exitosamente", Toast.LENGTH_LONG).show();
 
+            //vuelvo a la pag anterior
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 
         }
+        //Si cancelo
         if (v.getId() == R.id.buttonCancelarEditar) {
-
+            //vuelvo
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 
         }
     }
+    //Si presiono volver
     public void onBackPressed() {
-        //onNavigateUp();
+        //vuelvo
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }

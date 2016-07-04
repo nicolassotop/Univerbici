@@ -63,24 +63,13 @@ public class editarEstacionamActivity extends AppCompatActivity implements View.
 
         String rest=null;
         try {
+            //Se realiza un get al estacionamiento seleccionado
             rest = new HttpGet(mcontext, editarEstacionamActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/estacionamientos/" + idEstacionamiento).get();
 
+            //Se crea un jsonObj con los datos del estacionamiento
             jsonObj = new JSONObject(rest);
+            //El valor maximo del npicker sera la cantidad maxima de espacios del estacioanmiento
             nPicker.setMaxValue(jsonObj.getInt("capacidad"));
-            //JSONArray ja = new JSONArray(rest);
-/*
-            capEst = jsonObj.getInt("capacidad");
-            nPicker.setMaxValue(capEst);
-            Log.e("GET", "capacidadEst " + capEst);
-
-            estDispIngresa=nPicker.getValue();
-
-            lat = jsonObj.getDouble("ubi_x");
-            lon = jsonObj.getDouble("ubi_y");
-//            estOcu = capEst - estDispIngresa;
-
-  */
-
 
 
         } catch (InterruptedException e) {
@@ -99,31 +88,34 @@ public class editarEstacionamActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.botonActualiz) {
-
+            //Se obtiene el valor ingresado
             estDispIngresa = nPicker.getValue();
 
-            Log.e("ONCLICK","Ingresa user: "+estDispIngresa);
-
+            //estacionamientos ocupados = total - disponibles
             try {
                 estOcu = jsonObj.getInt("capacidad") - estDispIngresa;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            Log.e("ONCLICK","Est ocupados: "+estOcu);
+            //Se edita el valor resultante en el jsonObj
             try {
                 jsonObj.put("ocupados",estOcu);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+            //Hago el put al rest
             new HttpPut(mcontext, jsonObj,editarEstacionamActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/estacionamientos/"+idEstacionamiento);
+            //Toast para confirmar
             Toast.makeText(this, "Capacidad editada exitosamente", Toast.LENGTH_LONG).show();
+            //vuelvo al mapa
             Intent intent = new Intent(this, mapa.class);
             startActivity(intent);
         }
+        //Si cancelo
         if(v.getId() == R.id.botonCancela){
-
+            //vuelvo al mapa
             Intent intent = new Intent(this,mapa.class);
             startActivity(intent);
 

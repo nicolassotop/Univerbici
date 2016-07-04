@@ -52,16 +52,19 @@ public class amigosCercaActivity extends AppCompatActivity {
                         String rest = null;
 
                         try {
+                            //obtengo el id para buscar solo los datos del usuario logeado
                             String idUser = Login.getIdUserLogged();
+                            //Hago la peticion al servicio REST
                             rest = new HttpGet(mContext, amigosCercaActivity.this).execute("http://192.168.0.15:9090/sakila-backend-master/usuarios/"+idUser+"/cercanos").get();
 
+                            //Se guarda el resultado en un array
                             JSONArray jRestAmigosCerca = new JSONArray(rest);
 
-                            //int filas = tabla.getChildCount();
-                            //tabla.removeViews(1, filas-1);
-                            init();
-                            for (int i = 0; i < jRestAmigosCerca.length(); i++) {
 
+                            init();
+                            //Se deben obtener varios amigos
+                            for (int i = 0; i < jRestAmigosCerca.length(); i++) {
+                                //Para cada amigo vuelvo a crear un jsonObject
                                 JSONObject jObjectAmigosCerca = null;
                                 try {
                                     jObjectAmigosCerca = jRestAmigosCerca.getJSONObject(i);
@@ -69,19 +72,16 @@ public class amigosCercaActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                                if (jObjectAmigosCerca != null && i!= 0) { //El primero soy yo mismo, no me debo mostrar
+                                //Si quedan amigos cerca y si el amigo no soy yo mismo
+                                if (jObjectAmigosCerca != null && !idUser.equals(Integer.toString(i))) {
 
-                                    //HAY QUE FILTRAR AL PROPIO USER !!!
-
-                                    //int filas = tabla.getChildCount();
-
-                                    //tabla.removeViews(1, filas-1);
-
+                                    //Se obtienen los campos para llenar la tabla
                                     nombre = jObjectAmigosCerca.getString("nombre");
                                     apellido = jObjectAmigosCerca.getString("apellido");
                                     email = jObjectAmigosCerca.getString("email");
                                     nickname = jObjectAmigosCerca.getString("nickname");
 
+                                    //se llena la tabla
                                     llenarTabla(nombre,apellido,email,nickname);
 
                                 }

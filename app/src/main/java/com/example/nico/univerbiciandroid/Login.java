@@ -39,6 +39,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
     static double latUserLogged;
     static double lngUserLogged;
 
+    //getter y setter
+
     public static JSONObject getJsonUserLog() {
         return jsonUserLog;
     }
@@ -174,6 +176,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener{
 
     }
     public void onBackPressed() {
+        //FINALIZAR APP
         //onNavigateUp();
         //Intent intent = new Intent(this,destinoRutaActivity.class);
         //startActivity(intent);

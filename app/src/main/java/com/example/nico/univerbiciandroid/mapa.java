@@ -99,10 +99,8 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
 
 
         CameraPosition camPos = new CameraPosition.Builder()
-                .target(info)   //Centramos el mapa en Madrid
-                .zoom(17)         //Establecemos el zoom en 19
-                //.bearing(45)      //Establecemos la orientación con el noreste arriba
-                //.tilt(70)         //Bajamos el punto de vista de la cámara 70 grados
+                .target(info)   //Centramos el mapa en info
+                .zoom(17)         //Establecemos el zoom en 17
                 .build();
 
         CameraUpdate camUpd3 =
@@ -121,21 +119,26 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                         String rest = null;
 
                         try {
+                            //obtengo todos los estacionamientos de la bd
                             rest = new HttpGet(mcontext, mapa.this).execute("http://192.168.0.15:9090/sakila-backend-master/estacionamientos/").get();
-                            //JSONObject json = new JSONObject(rest);
+
+                            //guardo en un array
                             JSONArray jRest = new JSONArray(rest);
 
                             for (int i = 0; i < jRest.length(); i++) {
-
+                                //se debe recorrer el array
                                 JSONObject jObject = null;
                                 try {
+                                    //por cada elemento obtengo un jsonObj
                                     jObject = jRest.getJSONObject(i);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
 
+                                //Si no es nulo
                                 if (jObject != null) {
 
+                                    //creo un nuevo estacionamiento
                                     Estacionamiento est = new Estacionamiento(jObject);
                                     LatLng ubi = new LatLng(jObject.getDouble("ubi_x"), jObject.getDouble("ubi_y"));
                                     est.setUbicacion(ubi);
@@ -146,6 +149,8 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                                     estacionamientos.add(est);//almacenamos el estacionamiento en la lista
                                     int estDisp = est.getCantidadEstacionamiento() - est.getOcupados();
 
+                                    //agrego un marcador
+                                    //en el titulo guardo el nombre para mostrarlo y el id para buscarlo luego
                                     Marker m2 = mMap.addMarker(new MarkerOptions()
                                             .position(ubi)
                                             .title(est.getNombreEstacionamiento() + "," + est.getIdEstacionamiento())
@@ -153,7 +158,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                                                     "Estacionamientos Ocupados: " + est.getOcupados() + "\n" + "Estacionamientos Disponibles: " + estDisp)
                                     );
 
-                                    /////////////
+                                    ///////////// formato del infowindow
                                     mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
                                         @Override
                                         public View getInfoWindow(Marker marker) {
@@ -185,12 +190,15 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
                                     });
 
 
+                                    //Si presiono el infowindow
                                     mMap.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {
                                         @Override
                                         public void onInfoWindowClick(Marker marker) {
 
+                                            //paso a la otra ventana
                                             Intent intent = new Intent(mapa.this, editarEstacionamActivity.class);
 
+                                            //divido el titulo para separa nombre de id
                                             String[] nombreId = marker.getTitle().split(",");
 
                                             intent.putExtra("nombreEstacionamiento", nombreId[0]);
@@ -228,135 +236,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
             e.printStackTrace();
         }
         t.start();
-/*
 
-        final JSONObject[] jsonObj2 = {null};
-
-
-
-        t2 = new Thread(new Runnable() {
-            public void run() {
-                handler.post(new Runnable() { // This thread runs in the UI
-                    @Override
-                    public void run() {
-        try {
-            //String rest2 = new HttpGet(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=" + latOrigen + "," + longOrigen + "&destination=" + latDestino + "," + longDestino + "&mode=driving&avoid=highways|tolls").get();
-            String rest2 = new HttpGet(mcontext, mapa.this).execute("https://maps.googleapis.com/maps/api/directions/json?origin=-33.448649,%20-70.725299&destination=-33.450526,-70.688042&mode=driving&avoid=highways|tolls").get();
-
-
-            try {
-                jsonObj2[0] = new JSONObject(rest2);//jRest.getJSONObject(0);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            if (jsonObj2[0] != null) {
-
-
-
-                JSONArray jArrayRoutes;
-                JSONObject jObjectRoute;
-
-                JSONArray jArrayLegs;
-                JSONObject jObjectLegs;
-
-                JSONArray jArraySteps;
-                JSONObject jObjectStep;
-
-                JSONArray jArrayEndLocation;
-                JSONObject jObjectEndLocation;
-                JSONArray jArrayStartLocation;
-                JSONObject jObjectStartLocation;
-                JSONObject jObjGet;
-
-                LatLng puntoOrigen;
-                LatLng puntoDestino;
-
-                PolylineOptions rectOptions = null;
-
-
-
-                //SOL 3
-
-                jArrayRoutes = (JSONArray) jsonObj2[0].get("routes");
-                jObjGet = (JSONObject)jArrayRoutes.get(0);
-                jArrayLegs = (JSONArray)jObjGet.get("legs");
-                jObjectLegs = (JSONObject) jArrayLegs.get(0);
-                jArraySteps = (JSONArray)jObjectLegs.get("steps");
-                Log.e("JARRAYSTEP","contenido:"+jArraySteps.toString());
-                Log.e("Luego del jArray","STEPS");
-
-
-                Log.e("ANTES DEL FOR","FOR QUE AGREGA CADA PUNTO");
-
-                for (int i = 0; i < jArraySteps.length(); i++) {
-                    //jObjectStep = jArraySteps.getJSONObject(i);
-                    jObjectStep = (JSONObject)jArraySteps.get(i);
-                    Log.e("Luego del objStep","Objstem");
-                    if(i==0){
-                        //Log.e("Antes del array","anntes");
-                        //jArrayStartLocation = (JSONArray)jObjectStep.get("start_location");
-
-                        //AQUI SE CAEEEEEE OEEEEEEEEEE
-                        //Log.e("Luego del object","start_location"+jObjectStep.getJSONArray("start_location"));
-
-                        jObjectStartLocation = jObjectStep.getJSONObject("start_location");
-                        Log.e("luego del objectStart","lat="+jObjectStartLocation.getDouble("lat"));
-                        //jObjectStartLocation = jArrayStartLocation.getJSONObject(0);
-
-                        Log.e("LUEGO DEL JOBJECT","i="+i);
-                        puntoOrigen = new LatLng(jObjectStartLocation.getDouble("lat"),jObjectStartLocation.getDouble("lng"));
-
-                        Log.e("PUNTO ORIGEN","luego del punto origen");
-
-                        //latOrigen = jObjectStartLocation.getDouble("lat");
-                        //longOrigen = jObjectStartLocation.getDouble("lng");
-
-                        rectOptions = new PolylineOptions()
-                                .add(puntoOrigen); // Closes the polyline.
-
-                    }
-                    Log.e("Luego del if","i!=0 /// i="+i);
-
-                    //jArrayEndLocation = (JSONArray) jObjectStep.get("end_location");
-
-                    jObjectEndLocation = jObjectStep.getJSONObject("end_location");
-
-                    Log.e("Luego del objEnd","i="+i);
-
-                    puntoDestino = new LatLng(jObjectEndLocation.getDouble("lat"),jObjectEndLocation.getDouble("lng"));
-                    //latDestino = jObjectEndLocation.getDouble("lat");
-                    //longDestino = jObjectEndLocation.getDouble("lng");
-
-                    rectOptions.add(puntoDestino);
-
-
-            }
-                Polyline polyline = mMap.addPolyline(rectOptions);
-        }
-
-
-        }catch (InterruptedException e) {
-        e.printStackTrace();
-    } catch (ExecutionException e) {
-        e.printStackTrace();
-    } catch (JSONException e) {
-        e.printStackTrace();
-    }
-                    }
-                });
-
-
-            }
-
-
-        });
-        try {
-            t2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        t2.start();*/
 
     }
 
@@ -366,7 +246,7 @@ public class mapa extends FragmentActivity implements OnMapReadyCallback, OnInfo
         //startActivity(intent);
     }
     public void onBackPressed() {
-        //onNavigateUp();
+        //vuelvo al menu principal
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
